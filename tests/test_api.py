@@ -17,3 +17,12 @@ def test_tasks_returns_typed_task_collection() -> None:
 
     assert response.status_code == 200
     assert response.json() == [{"id": 1, "title": "Первая задача"}]
+
+
+def test_openapi_exposes_task_endpoint_contract() -> None:
+    response = client.get("/openapi.json")
+
+    assert response.status_code == 200
+    schema = response.json()
+    assert "/tasks" in schema["paths"]
+    assert "200" in schema["paths"]["/tasks"]["get"]["responses"]
